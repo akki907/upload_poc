@@ -12,7 +12,6 @@ interface ErrorResponse {
 }
 
 const handleMulterError = (err: MulterError): AppError => {
-
     if (err.code === 'LIMIT_FILE_SIZE') {
         return new AppError('File size too large. Max 5MB allowed.', 400);
     }
@@ -30,7 +29,7 @@ const errorHandler = (
     logger.error('Error:', {
         message: err.message,
         stack: err.stack,
-        statusCode
+        statusCode,
     });
 
     if (err instanceof MulterError) {
@@ -41,13 +40,13 @@ const errorHandler = (
         if ((err as AppError).isOperational) {
             res.status(statusCode).json({
                 status,
-                message: err.message
+                message: err.message,
             });
             return;
         }
         res.status(500).json({
             status: 'error',
-            message: 'Something went wrong'
+            message: 'Something went wrong',
         });
         return;
     }
@@ -57,7 +56,7 @@ const errorHandler = (
         status,
         message: err.message,
         stack: err.stack,
-        error: err
+        error: err,
     });
 };
 

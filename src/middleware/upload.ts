@@ -9,14 +9,21 @@ const storage = multer.memoryStorage();
 const fileFilter = (
     _: Request,
     file: Express.Multer.File,
-    cb: multer.FileFilterCallback
+    cb: multer.FileFilterCallback,
 ): void => {
     console.log({ file });
     const ext = path.extname(file.originalname).toLowerCase();
 
-    if (!config.upload.allowedMimeTypes.includes(file.mimetype) ||
-        !config.upload.allowedExtensions.includes(ext)) {
-        return cb(new AppError('Invalid file type. Only JPEG, PNG and GIF allowed.', 400));
+    if (
+        !config.upload.allowedMimeTypes.includes(file.mimetype) ||
+        !config.upload.allowedExtensions.includes(ext)
+    ) {
+        return cb(
+            new AppError(
+                'Invalid file type. Only JPEG, PNG and GIF allowed.',
+                400,
+            ),
+        );
     }
     cb(null, true);
 };
@@ -24,9 +31,9 @@ const fileFilter = (
 const upload = multer({
     storage,
     limits: {
-        fileSize: config.upload.maxSize
+        fileSize: config.upload.maxSize,
     },
-    fileFilter
+    fileFilter,
 });
 
 export default upload;

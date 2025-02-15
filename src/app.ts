@@ -10,24 +10,28 @@ import { uploadImage } from './controllers/uploadController';
 
 const app: Application = express();
 
-
-
-app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    methods: ['POST', 'OPTIONS', 'GET', 'PUT', 'DELETE'],
-}));
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL || 'http://localhost:3000',
+        methods: ['POST', 'OPTIONS', 'GET', 'PUT', 'DELETE'],
+    }),
+);
 
 // Security middleware
 // In app.ts
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            imgSrc: ["'self'", `https://${config.aws.bucketName}.s3.amazonaws.com`]
-        }
-    }
-}));
-
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                imgSrc: [
+                    "'self'",
+                    `https://${config.aws.bucketName}.s3.amazonaws.com`,
+                ],
+            },
+        },
+    }),
+);
 
 // Rate limiting
 const limiter = rateLimit({
@@ -37,14 +41,15 @@ const limiter = rateLimit({
     legacyHeaders: false, // Disable legacy headers
     message: {
         status: 'error',
-        message: 'Too many requests, please try again later.'
+        message: 'Too many requests, please try again later.',
     },
     handler: (req, res) => {
         res.status(429).json({
             status: 'error',
-            message: 'Too many upload attempts, please try again after 15 minutes'
+            message:
+                'Too many upload attempts, please try again after 15 minutes',
         });
-    }
+    },
 });
 
 app.use('/upload', limiter);
@@ -69,7 +74,9 @@ app.use(errorHandler);
 const startServer = (): void => {
     try {
         app.listen(config.app.port, () => {
-            logger.info(`Server running in ${config.app.env} mode on port ${config.app.port}`);
+            logger.info(
+                `Server running in ${config.app.env} mode on port ${config.app.port}`,
+            );
         });
     } catch (error) {
         logger.error('Failed to start server:', error);

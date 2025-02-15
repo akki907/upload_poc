@@ -3,7 +3,10 @@ import path from 'path';
 import { Config } from '../types';
 
 dotenv.config({
-    path: path.join(__dirname, `../../.env${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`)
+    path: path.join(
+        __dirname,
+        `../../.env${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}`,
+    ),
 });
 
 const config: Config = {
@@ -15,13 +18,13 @@ const config: Config = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
         region: process.env.AWS_REGION || '',
-        bucketName: process.env.AWS_BUCKET_NAME || ''
+        bucketName: process.env.AWS_BUCKET_NAME || '',
     },
     upload: {
         maxSize: 5 * 1024 * 1024, // 5MB
         allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif'],
-        allowedExtensions: ['.jpg', '.jpeg', '.png', '.gif']
-    }
+        allowedExtensions: ['.jpg', '.jpeg', '.png', '.gif'],
+    },
 };
 
 export default config;

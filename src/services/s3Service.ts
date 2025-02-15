@@ -10,8 +10,8 @@ class S3Service {
             region: config.aws.region,
             credentials: {
                 accessKeyId: config.aws.accessKeyId,
-                secretAccessKey: config.aws.secretAccessKey
-            }
+                secretAccessKey: config.aws.secretAccessKey,
+            },
         });
     }
 
@@ -22,7 +22,7 @@ class S3Service {
                 Key: key,
                 Body: file.buffer,
                 ContentType: file.mimetype,
-                ContentDisposition: 'inline'
+                ContentDisposition: 'inline',
             };
 
             await this.s3Client.send(new PutObjectCommand(uploadParams));

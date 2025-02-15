@@ -8,7 +8,7 @@ import { UploadResponse } from '../types';
 export const uploadImage = async (
     req: Request,
     res: Response<UploadResponse>,
-    next: NextFunction
+    next: NextFunction,
 ): Promise<void> => {
     try {
         if (!req.file) {
@@ -26,11 +26,10 @@ export const uploadImage = async (
             status: 'success',
             data: {
                 message: 'File uploaded successfully',
-                fileUrl
-            }
+                fileUrl,
+            },
         });
     } catch (error) {
-        console.error(error);
         next(error);
     }
 };
